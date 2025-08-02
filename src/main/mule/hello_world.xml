@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="72f50523-5bba-410e-a0b9-0b99fc39cda3" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="8215f232-2f22-46c5-8056-3fd9ad5e99f8" >
+		<http:listener-connection host="0.0.0.0" port="8087" />
+	</http:listener-config>
+	<flow name="hello_worldFlow" doc:id="458328ca-d17e-4215-8ba3-136b3589fd3a" >
+		<http:listener doc:name="Listener" doc:id="3061aa30-4050-437e-aa2b-3d216716350b" config-ref="HTTP_Listener_config1" path="/hello_world"/>
+		<logger level="INFO" doc:name="Logger" doc:id="528e9716-2834-4476-a77c-d87360bb7581" message='"Hello_world Hi every one How are you What are you doing"!'/>
+		<ee:transform doc:name="Transform Message" doc:id="2a94467d-f412-4336-8f32-46ef729cdaca" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"name": "sivakoti",
+	"phone": "8745896521"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="485f38e0-0b02-4a46-a56a-738e0f3cc4fb" message="#[payload]"/>
+	</flow>
+</mule>
